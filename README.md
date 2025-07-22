@@ -1,4 +1,4 @@
-# This repository was forked by me, because i have a requirement to integrate with discord
+# This repository was forked by me, because i have a requirement to integrate with discord. So i will maintain this repository
 # Actions Status Discord
 
 Discord Notification Made Easy.
