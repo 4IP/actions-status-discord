@@ -58,6 +58,11 @@ export function getInputs(): Inputs {
     const nocontext = nodetail || stob(core.getInput('nocontext'))
     const noprefix = nodetail || stob(core.getInput('noprefix'))
 
+    const status = (core.getInput('status') || process.env.INPUT_STATUS || 'success').toLowerCase() as StatusType
+    if (!(status in statusOpts)) {
+        throw new Error(`invalid status value: ${status}`)
+    }
+
     const inputs: Inputs =  {
         webhooks: webhooks,
         status: core.getInput('status').trim().toLowerCase() as StatusType,
