@@ -3,7 +3,7 @@ import { logWarning, stob } from './utils'
 
 export interface Inputs {
     webhooks: string[]
-    status: string
+    status: 'success' | 'failure' | 'cancelled'
     title: string
     description: string
     content: string
@@ -58,7 +58,7 @@ export function getInputs(): Inputs {
 
     const inputs: Inputs =  {
         webhooks: webhooks,
-        status: core.getInput('status').trim().toLowerCase(),
+        status: core.getInput('status').trim().toLowerCase() as 'success' | 'failure' | 'cancelled',
         description: core.getInput('description').trim(),
         content: core.getInput('content').trim(),
         title: (core.getInput('title') || core.getInput('job')).trim(),

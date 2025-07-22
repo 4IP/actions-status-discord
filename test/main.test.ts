@@ -40,7 +40,7 @@ describe('getPayload(Inputs)', () => {
         nocontext: false,
         noprefix: false,
         webhooks: ['https://discord.com/api/webhooks/test/mock'],
-        status: 'success',
+        status: 'success' as const,
         description: '',
         content: '',
         title: '',
