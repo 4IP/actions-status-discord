@@ -33,21 +33,39 @@ async function run() {
     }
 }
 
-function wrapWebhook(webhook: string, payload: Object): Promise<void> {
-    return async function () {
-        try {
-            await axios.post(webhook, payload)
-        } catch (e: unknown) {
-            if (isAxiosError(e) && e.response) {
-                logError(`Webhook response: ${e.response.status}: ${JSON.stringify(e.response.data)}`)
-            } else if (e instanceof Error) {
-                logError(e.message)
-            } else {
-                logError(String(e))
-            }
+async function wrapWebhook(webhook: string, payload: Object): Promise<void> {
+    try {
+        const response = await axios.post(webhook, payload, {
+            timeout: 5000, // Add timeout
+            validateStatus: (status) => status < 400 // Consider only 4xx/5xx as errors
+        })
+        logDebug(`Webhook response: ${response.status}`)
+    } catch (e: unknown) {
+        if (isAxiosError(e) && e.response) {
+            logError(`Webhook response: ${e.response.status}: ${JSON.stringify(e.response.data)}`)
+        } else if (e instanceof Error) {
+            logError(e.message)
+        } else {
+            logError(String(e))
         }
-    }()
+    }
 }
+
+// function wrapWebhook(webhook: string, payload: Object): Promise<void> {
+//     return async function () {
+//         try {
+//             await axios.post(webhook, payload)
+//         } catch (e: unknown) {
+//             if (isAxiosError(e) && e.response) {
+//                 logError(`Webhook response: ${e.response.status}: ${JSON.stringify(e.response.data)}`)
+//             } else if (e instanceof Error) {
+//                 logError(e.message)
+//             } else {
+//                 logError(String(e))
+//             }
+//         }
+//     }()
+// }
 
 export function getPayload(inputs: Readonly<Inputs>): Object {
     const ctx = github.context

@@ -1,6 +1,11 @@
 import { formatEvent } from '../src/format'
 import { Inputs } from '../src/input'
 import { getPayload } from '../src/main'
+import axios from 'axios'
+
+jest.mock('axios')
+const mockedAxios = axios as jest.Mocked<typeof axios>
+mockedAxios.post.mockResolvedValue({ status: 204 })
 
 jest.mock('@actions/github', () => {
     return {
