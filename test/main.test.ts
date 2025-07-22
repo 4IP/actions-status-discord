@@ -53,11 +53,6 @@ describe('getPayload(Inputs)', () => {
         nodetail: false
     }
 
-    beforeEach(() => {
-        // Reset status for each test
-        process.env.INPUT_STATUS = 'success'
-    })
-
     test("default", () => {
         const inputs: Inputs = {
             ...baseInputs
