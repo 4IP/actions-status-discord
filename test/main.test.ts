@@ -5,7 +5,13 @@ import axios from 'axios'
 
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
-mockedAxios.post.mockResolvedValue({ status: 204 })
+mockedAxios.post.mockResolvedValue({ 
+    status: 204,
+    data: {},
+    statusText: 'OK',
+    headers: {},
+    config: {} 
+})
 
 jest.mock('@actions/github', () => {
     return {
@@ -41,7 +47,10 @@ describe('getPayload(Inputs)', () => {
         image: '',
         color: NaN,
         username: '',
-        avatar_url: ''
+        avatar_url: '',
+        job: '',
+        nofail: true,
+        nodetail: false
     }
 
     test("default", () => {

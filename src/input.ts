@@ -4,15 +4,18 @@ import { logWarning, stob } from './utils'
 export interface Inputs {
     webhooks: string[]
     status:string
+    title: string
     description: string
     content: string
-    title: string
     image: string
     color: number
     username: string
     avatar_url: string
     nocontext: boolean
     noprefix: boolean
+    nodetail: boolean
+    nofail: boolean
+    job?: string
 }
 
 interface StatusOption {
@@ -64,7 +67,10 @@ export function getInputs(): Inputs {
         username: core.getInput('username').trim(),
         avatar_url: core.getInput('avatar_url').trim(),
         nocontext: nocontext,
-        noprefix: noprefix
+        noprefix: noprefix,
+        nodetail: nodetail,
+        nofail: stob(core.getInput('nofail')),
+        job: core.getInput('job').trim()
     }
 
     // validate
