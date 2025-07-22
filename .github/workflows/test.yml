@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,6 +18,8 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
+        env:
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/test/mock"
       - name: Build and prepare release
         run: npm run release
       - name: Commit and push
