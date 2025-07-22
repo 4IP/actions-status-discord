@@ -5,6 +5,11 @@ import { formatEvent } from './format'
 import { getInputs, Inputs, statusOpts } from './input'
 import { logDebug, logError, logInfo } from './utils'
 import { fitEmbed } from './validate'
+import { AxiosError } from 'axios'
+
+function isAxiosError(error: unknown): error is AxiosError {
+    return (error as AxiosError).isAxiosError === true
+}
 
 async function run() {
     try {
@@ -14,25 +19,31 @@ async function run() {
         logInfo('Generating payload...')
         const payload = getPayload(inputs)
         startGroup('Dump payload')
-            logInfo(JSON.stringify(payload, null, 2))
+        logInfo(JSON.stringify(payload, null, 2))
         endGroup()
 
-        logInfo(`Triggering ${inputs.webhooks.length} webhook${inputs.webhooks.length>1 ? 's' : ''}...`)
+        logInfo(`Triggering ${inputs.webhooks.length} webhook${inputs.webhooks.length > 1 ? 's' : ''}...`)
         await Promise.all(inputs.webhooks.map(w => wrapWebhook(w.trim(), payload)))
-    } catch(e) {
-        logError(`Unexpected failure: ${e} (${e.message})`)
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            logError(`Unexpected failure: ${e} (${e.message})`)
+        } else {
+            logError('Unexpected failure: ' + String(e))
+        }
     }
 }
 
 function wrapWebhook(webhook: string, payload: Object): Promise<void> {
-    return async function() {
+    return async function () {
         try {
             await axios.post(webhook, payload)
-        } catch(e) {
-            if (e.response) {
+        } catch (e: unknown) {
+            if (isAxiosError(e) && e.response) {
                 logError(`Webhook response: ${e.response.status}: ${JSON.stringify(e.response.data)}`)
+            } else if (e instanceof Error) {
+                logError(e.message)
             } else {
-                logError(e)
+                logError(String(e))
             }
         }
     }()
@@ -50,7 +61,7 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
     const eventFieldTitle = `Event - ${eventName}`
     const eventDetail = formatEvent(eventName, payload)
 
-    let embed: {[key: string]: any} = {
+    let embed: { [key: string]: any } = {
         color: inputs.color || statusOpts[inputs.status].color,
         timestamp: (new Date()).toISOString()
     }
@@ -109,7 +120,7 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
 
     if (inputs.username) dscPayload.username = inputs.username
     if (inputs.avatar_url) dscPayload.avatar_url = inputs.avatar_url
-    if(inputs.content) dscPayload.content = inputs.content   
+    if (inputs.content) dscPayload.content = inputs.content
 
     return dscPayload
 }

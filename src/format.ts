@@ -14,9 +14,13 @@ export function formatEvent(event: string, payload: Object): string {
     if (event in formatters) {
         try {
             return formatters[event](payload) || msg
-        } catch(e) {
-            logDebug(`Failed to generate eventDetail for ${event}: ${e}\n${e.stack}`)
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                logDebug(`Failed to generate eventDetail for ${event}: ${e}\n${e.stack}`)
+            } else {
+                logDebug(`Failed to generate eventDetail for ${event}: ${String(e)}`)
         }
+}
     }
 
     return msg
