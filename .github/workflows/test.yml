@@ -18,16 +18,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run tests
-        run: npm test
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/test/mock"
           INPUT_STATUS: "success"
           GITHUB_JOB: "test"
-          GITHUB_WORKFLOW: ${{ github.workflow }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF: ${{ github.ref }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_WORKFLOW: ${{ github.workflow }}
+          GITHUB_EVENT_NAME: "push"
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          echo "Setting up test environment..."
+          export INPUT_STATUS="success"
+          export GITHUB_JOB="test"
+          npm test
       - name: Build and prepare release
         run: npm run release
       - name: Commit and push

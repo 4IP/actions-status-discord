@@ -53,10 +53,22 @@ describe('getPayload(Inputs)', () => {
         nodetail: false
     }
 
+    beforeEach(() => {
+        process.env.INPUT_STATUS = 'success'
+        process.env.GITHUB_WORKFLOW = 'test'
+        process.env.GITHUB_JOB = 'test'
+    })
+
+    afterEach(() => {
+        delete process.env.INPUT_STATUS
+        delete process.env.GITHUB_WORKFLOW
+        delete process.env.GITHUB_JOB
+    })
+
     test("default", () => {
         const inputs: Inputs = {
             ...baseInputs
-        }
+        };
         const want = {
             embeds: [{
                 color: 0x28A745,
@@ -90,8 +102,8 @@ describe('getPayload(Inputs)', () => {
                     }
                 ]
             }]
-        }
-        expect(getPayload(inputs)).toStrictEqual(want)
+        };
+        expect(getPayload(inputs)).toStrictEqual(want);
     })
 
     test("nodetail", () => {
