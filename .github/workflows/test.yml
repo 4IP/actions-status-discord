@@ -20,7 +20,7 @@ jobs:
       - name: Run tests
         run: npm test
         env:
-          DISCORD_WEBHOOK: "${{ secrets.DISCORD_WEBHOOK }}"
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/test/mock"
           INPUT_STATUS: "success"
           GITHUB_JOB: "test"
       - name: Build and prepare release
