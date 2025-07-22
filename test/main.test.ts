@@ -28,7 +28,7 @@ describe('getPayload(Inputs)', () => {
     const baseInputs: Inputs = {
         nocontext: false,
         noprefix: false,
-        webhooks: ['https://webhook.invalid'],
+        webhooks: ['https://discord.com/api/webhooks/test/mock'],
         status: 'success',
         description: '',
         content: '',
