@@ -14,7 +14,17 @@ jest.mock('@actions/github', () => {
             ref: 'refs/tags/simple-tag',
             workflow: 'push-ci',
             actor: 'Codertocat',
-            payload: require('./payload/push_tag.json')
+            payload: {
+                ...require('./payload/push_tag.json'),
+                sender: {
+                    login: 'Codertocat',
+                    id: 21031067,
+                    node_id: 'MDQ6VXNlcjIxMDMxMDY3',
+                    avatar_url: 'https://avatars1.githubusercontent.com/u/21031067',
+                    type: 'User',
+                    site_admin: false
+                }
+            }
 
         }
     }
