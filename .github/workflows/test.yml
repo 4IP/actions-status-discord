@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      GITHUB_JOB: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,8 +21,12 @@ jobs:
         run: npm test
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/test/mock"
-      - run: npm run release
-      - name: Release
+          INPUT_STATUS: "success"
+          GITHUB_JOB: "test"
+      - name: Build and prepare release
+        run: npm run release
+      - name: Commit and push
+        if: success()
         run: |
           git config --global user.name "4IP"
           git config --global user.email "${{ secrets.EMAIL }}"
