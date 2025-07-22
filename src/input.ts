@@ -65,7 +65,7 @@ export function getInputs(): Inputs {
 
     const inputs: Inputs =  {
         webhooks: webhooks,
-        status: core.getInput('status').trim().toLowerCase() as StatusType,
+        status: status,
         description: core.getInput('description').trim(),
         content: core.getInput('content').trim(),
         title: (core.getInput('title') || core.getInput('job')).trim(),

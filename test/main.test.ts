@@ -3,16 +3,17 @@ import { Inputs, StatusType } from '../src/input'
 import { getPayload } from '../src/main'
 import axios from 'axios'
 
-jest.mock('axios')
-const mockedAxios = axios as jest.Mocked<typeof axios>
-mockedAxios.post.mockResolvedValue({ 
-    status: 204,
-    data: {},
-    statusText: 'OK',
-    headers: {},
-    config: {} 
+jest.mock('axios', () => {
+  return {
+    post: jest.fn().mockResolvedValue({
+      status: 204,
+      statusText: 'No Content',
+      data: {},
+      headers: {},
+      config: {}
+    })
+  }
 })
-
 jest.mock('@actions/github', () => {
     return {
         context: {
@@ -25,8 +26,9 @@ jest.mock('@actions/github', () => {
             ref: 'refs/tags/simple-tag',
             workflow: 'push-ci',
             actor: 'Codertocat',
+            job: 'test',
+            status: 'success',
             payload: require('./payload/push_tag.json')
-
         }
     }
 })
@@ -57,17 +59,31 @@ describe('getPayload(Inputs)', () => {
         process.env.INPUT_STATUS = 'success'
         process.env.GITHUB_WORKFLOW = 'test'
         process.env.GITHUB_JOB = 'test'
+        process.env.GITHUB_REPOSITORY = 'Codertocat/Hello-World'
+        process.env.GITHUB_EVENT_NAME = 'push'
+        process.env.GITHUB_SHA = '6113728f27ae82c7b1a177c8d03f9e96e0adf246'
+        process.env.GITHUB_REF = 'refs/tags/simple-tag'
+        process.env.GITHUB_ACTOR = 'Codertocat'
+        process.env.DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/test/mock'
     })
 
     afterEach(() => {
         delete process.env.INPUT_STATUS
         delete process.env.GITHUB_WORKFLOW
         delete process.env.GITHUB_JOB
+        delete process.env.GITHUB_REPOSITORY
+        delete process.env.GITHUB_EVENT_NAME
+        delete process.env.GITHUB_SHA
+        delete process.env.GITHUB_REF
+        delete process.env.GITHUB_ACTOR
+        delete process.env.DISCORD_WEBHOOK
     })
 
     test("default", () => {
+        process.env.DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/test/mock';
         const inputs: Inputs = {
-            ...baseInputs
+            ...baseInputs,
+            webhooks: ['https://discord.com/api/webhooks/test/mock']
         };
         const want = {
             embeds: [{
