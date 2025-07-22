@@ -3,7 +3,7 @@ import { logWarning, stob } from './utils'
 
 export interface Inputs {
     webhooks: string[]
-    status:string
+    status: string
     title: string
     description: string
     content: string
