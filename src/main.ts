@@ -79,8 +79,8 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
     const eventFieldTitle = `Event - ${eventName}`
     const eventDetail = formatEvent(eventName, payload)
 
-    const status = inputs.status || 'success'
-    const statusOpt = statusOpts[status]
+    const status = inputs.status || process.env.INPUT_STATUS || 'success'
+    const statusOpt = statusOpts[status as keyof typeof statusOpts]
     if (!statusOpt) {
         throw new Error(`Invalid status: ${status}`)
     }
