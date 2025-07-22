@@ -298,6 +298,7 @@ describe('getPayload(Inputs)', () => {
                 ]
             }]
         }
+        expect(getPayload(inputs)).toStrictEqual(want)
     })
 
     test("color", () => {
