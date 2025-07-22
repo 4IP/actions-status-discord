@@ -79,6 +79,12 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
     const eventFieldTitle = `Event - ${eventName}`
     const eventDetail = formatEvent(eventName, payload)
 
+    const status = inputs.status || 'success'
+    const statusOpt = statusOpts[status]
+    if (!statusOpt) {
+        throw new Error(`Invalid status: ${status}`)
+    }
+
     let embed: { [key: string]: any } = {
         color: inputs.color || statusOpts[inputs.status].color,
         timestamp: (new Date()).toISOString()
@@ -117,7 +123,7 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
             },
             {
                 name: eventFieldTitle,
-                value: eventDetail,
+                value: eventDetail || 'No details available',
                 inline: false
             },
             {
