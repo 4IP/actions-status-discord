@@ -86,7 +86,7 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
     }
 
     let embed: { [key: string]: any } = {
-        color: inputs.color || statusOpts[inputs.status].color,
+        color: inputs.color || statusOpt.color,
         timestamp: (new Date()).toISOString()
     }
 
@@ -102,7 +102,7 @@ export function getPayload(inputs: Readonly<Inputs>): Object {
     }
 
     if (!inputs.noprefix) {
-        embed.title = statusOpts[inputs.status].status + (embed.title ? `: ${embed.title}` : '')
+        embed.title = statusOpt.status + (embed.title ? `: ${embed.title}` : '')
     }
 
     if (inputs.description) {
