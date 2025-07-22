@@ -1,3 +1,4 @@
+# This repository was forked by me, because i have a requirement to integrate with discord
 # Actions Status Discord
 
 Discord Notification Made Easy.
