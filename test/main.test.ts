@@ -42,7 +42,7 @@ describe('getPayload(Inputs)', () => {
         status: 'success',
         description: '',
         content: '',
-        title: '',
+        title: 'testing',
         image: '',
         color: NaN,
         username: '',
