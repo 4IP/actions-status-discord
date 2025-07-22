@@ -1,9 +1,11 @@
 import * as core from '@actions/core'
 import { logWarning, stob } from './utils'
 
+export type StatusType = 'success' | 'failure' | 'cancelled'
+
 export interface Inputs {
     webhooks: string[]
-    status: 'success' | 'failure' | 'cancelled'
+    status: StatusType
     title: string
     description: string
     content: string
@@ -23,7 +25,7 @@ interface StatusOption {
     color: number
 }
 
-export const statusOpts: Record<string, StatusOption> = {
+export const statusOpts: Record<StatusType, StatusOption> = {
     success: {
         status: 'Success',
         color: 0x28A745
@@ -58,7 +60,7 @@ export function getInputs(): Inputs {
 
     const inputs: Inputs =  {
         webhooks: webhooks,
-        status: core.getInput('status').trim().toLowerCase() as 'success' | 'failure' | 'cancelled',
+        status: core.getInput('status').trim().toLowerCase() as StatusType,
         description: core.getInput('description').trim(),
         content: core.getInput('content').trim(),
         title: (core.getInput('title') || core.getInput('job')).trim(),

@@ -1,6 +1,6 @@
 name: 'Post Actions Status to Discord'
 description: 'Post Github Actions CI status to Discord'
-author: 'Sarisia'
+author: '4IP'
 
 inputs:
   webhook:
