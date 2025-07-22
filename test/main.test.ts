@@ -36,18 +36,6 @@ const mockedFormatEvent = formatEvent as jest.Mock
 mockedFormatEvent.mockReturnValue("mocked format event")
 
 describe('getPayload(Inputs)', () => {
-    beforeEach(() => {
-        process.env.INPUT_STATUS = 'success'
-        process.env.GITHUB_WORKFLOW = 'test'
-        process.env.GITHUB_JOB = 'test'
-    })
-
-    afterEach(() => {
-        delete process.env.INPUT_STATUS
-        delete process.env.GITHUB_WORKFLOW
-        delete process.env.GITHUB_JOB
-    })
-    
     const baseInputs: Inputs = {
         nocontext: false,
         noprefix: false,
