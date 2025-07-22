@@ -1,5 +1,5 @@
 import { formatEvent } from '../src/format'
-import { Inputs } from '../src/input'
+import { Inputs, StatusType } from '../src/input'
 import { getPayload } from '../src/main'
 import axios from 'axios'
 
@@ -40,7 +40,7 @@ describe('getPayload(Inputs)', () => {
         nocontext: false,
         noprefix: false,
         webhooks: ['https://discord.com/api/webhooks/test/mock'],
-        status: 'success' as const,
+        status: 'success' as StatusType,
         description: '',
         content: '',
         title: '',
